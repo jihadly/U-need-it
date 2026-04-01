@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@u_neeed_it</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', 'Orbitron', monospace;
+            overflow: hidden;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            position: relative;
+        }
+        
+        /* Animated Mesh Background */
+        .mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 58, 220, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 128, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 255, 255, 0.2) 0%, transparent 50%);
+            filter: blur(60px);
+            animation: meshMove 15s ease-in-out infinite;
+            z-index: -2;
+        }
+        
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        /* Grid Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: gridFloat 10s ease-in-out infinite;
+        }
+        
+        @keyframes gridFloat {
+            0%, 100% { transform: rotateX(0deg); }
+            50% { transform: rotateX(5deg); }
+        }
+        
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ff);
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Intro Screen with Winking Cat */
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 0.5s ease-in-out 2s forwards;
+        }
+        
+        .cat-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.8));
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        
+        /* Main Content */
+        #main-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2.2s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 60px 80px;
+            box-shadow: 
+                0 8px 32px 0 rgba(0, 0, 0, 0.37),
+                0 0 50px rgba(0, 212, 255, 0.2),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.03),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        /* Channel Name - HIGH CONTRAST */
+        .channel-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 64px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00d4ff, #ff00ff, #00d4ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 6px;
+            animation: gradientShift 3s ease infinite, glitch 5s infinite;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+        
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            91% { transform: translate(-3px, 3px); }
+            92% { transform: translate(3px, -3px); }
+            93% { transform: translate(-3px, -3px); }
+            94% { transform: translate(3px, 3px); }
+        }
+        
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+        
+        /* CTA Button - JOIN NOW */
+        .join-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 
+                0 10px 30px rgba(0, 212, 255, 0.4),
+                0 0 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .join-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 15px 40px rgba(0, 212, 255, 0.6),
+                0 0 40px rgba(0, 212, 255, 0.4);
+        }
+        
+        .join-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .join-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        
+        .join-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Floating Icons */
+        .float-icon {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.2;
+            animation: floatAround 10s infinite ease-in-out;
+        }
+        
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -30px) rotate(90deg); }
+            50% { transform: translate(-10px, 20px) rotate(180deg); }
+            75% { transform: translate(30px, 10px) rotate(270deg); }
+        }
+        
+        /* Terminal Corner */
+        .terminal-corner {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: #00ff88;
+            font-size: 13px;
+            opacity: 0.8;
+            text-align: left;
+        }
+        
+        /* Scan Line */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 212, 255, 0.8), transparent);
+            animation: scan 4s linear infinite;
+            z-index: 999;
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100vh; }
+        }
+        
+        @media (max-width: 768px) {
+            .channel-name {
+                font-size: 36px;
+                letter-spacing: 3px;
+            }
+            .glass-card {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+            .cat-container {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scanning Line -->
+    <div class="scan-line"></div>
+    
+    <!-- Background Effects -->
+    <div class="mesh-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Intro Screen with Winking Cat -->
+    <div id="intro">
+        <div class="cat-container">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Glow Filter -->
+                <defs>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                
+                <!-- Cat Face -->
+                <circle cx="100" cy="100" r="75" fill="none" stroke="#00d4ff" stroke-width="3" filter="url(#glow)"/>
+                <circle cx="100" cy="100" r="70" fill="rgba(0,0,0,0.3)"/>
+                
+                <!-- Ears -->
+                <path d="M 45 55 L 25 15 L 65 45 Z" fill="none" stroke="#00d4ff" stroke-width="3" filter="url(#glow)"/>
+                <path d="M 155 55 L 175 15 L 135 45 Z" fill="none" stroke="#00d4ff" stroke-width="3" filter="url(#glow)"/>
+                
+                <!-- Left Eye (Open with cyber look) -->
+                <ellipse cx="75" cy="85" rx="12" ry="18" fill="#00d4ff" filter="url(#glow)">
+                    <animate attributeName="ry" values="18;2;18" dur="3s" repeatCount="indefinite"/>
+                </ellipse>
+                <circle cx="75" cy="80" r="4" fill="#fff"/>
+                
+                <!-- Right Eye (Winking) -->
+                <path d="M 140 85 Q 125 95 110 85" stroke="#00d4ff" stroke-width="4" fill="none" filter="url(#glow)">
+                    <animateTransform attributeName="transform" type="scale" values="1,1; 1,0.1; 1,1" keyTimes="0; 0.1; 0.2" dur="2s" begin="0.5s"/>
+                </path>
+                
+                <!-- Nose -->
+                <polygon points="100,105 90,115 110,115" fill="#ff00ff" filter="url(#glow)"/>
+                
+                <!-- Mouth -->
+                <path d="M 100 115 L 100 125 M 90 120 Q 100 125 110 120" stroke="#00d4ff" stroke-width="2" fill="none"/>
+                
+                <!-- Whiskers -->
+                <line x1="35" y1="95" x2="60" y2="100" stroke="#00d4ff" stroke-width="1" opacity="0.6"/>
+                <line x1="35" y1="105" x2="60" y2="105" stroke="#00d4ff" stroke-width="1" opacity="0.6"/>
+                <line x1="140" y1="100" x2="165" y2="95" stroke="#00d4ff" stroke-width="1" opacity="0.6"/>
+                <line x1="140" y1="105" x2="165" y2="105" stroke="#00d4ff" stroke-width="1" opacity="0.6"/>
+                
+                <!-- Tech Decorations -->
+                <circle cx="100" cy="100" r="85" fill="none" stroke="#ff00ff" stroke-width="1" stroke-dasharray="10,5" opacity="0.5">
+                    <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="10s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="main-content">
+        <div class="terminal-corner">
+            > SYSTEM.INIT()<br>
+            > STATUS: ONLINE<br>
+            > CONNECTION: SECURE<span class="cursor">_</span>
+        </div>
+        
+        <!-- Floating Decorations -->
+        <div class="float-icon" style="top: 20%; left: 10%;">⚡</div>
+        <div class="float-icon" style="top: 70%; left: 15%; animation-delay: 2s;">🔮</div>
+        <div class="float-icon" style="top: 30%; right: 10%; animation-delay: 4s;">💎</div>
+        <div class="float-icon" style="bottom: 20%; right: 15%; animation-delay: 6s;">🚀</div>
+        
+        <div class="glass-card">
+            <div class="channel-name">@u_neeed_it</div>
+            <div class="subtitle">Premium Content</div>
+            
+            <a href="https://t.me/u_neeed_it" class="join-btn" target="_blank">
+                <span>➤</span> JOIN NOW
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Create Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#00d4ff', '#ff00ff', '#00ff88', '#ffaa00'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const left = Math.random() * 100;
+                const delay = Math.random() * 6;
+                const duration = Math.random() * 3 + 3;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.left = left + '%';
+                particle.style.animationDelay = delay + 's';
+                particle.style.animationDuration = duration + 's';
+                particle.style.background = color;
+                particle.style.boxShadow = `0 0 10px ${color}`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+    </script>
+</body>
+</html>
